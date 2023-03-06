@@ -1,5 +1,6 @@
 <?php 
 require './conection.php';
+session_start();
 ?>
 
 
@@ -23,12 +24,11 @@ require './conection.php';
     <meta name="robots" content="noindex, follow">
 </head>
 
-<nav class="site-nav">
-        <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#3A1078;">
+
+<body>
+<div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#3A1078;">
             <a href="index.php" class="logo ms-4 rounded-circle bg-white"><img src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
         </div>
-</nav>
-<body>
     <div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
         <div class="wrapper wrapper--w960">
             <div class="card card-2">
@@ -48,6 +48,12 @@ require './conection.php';
                         <div class="input-group">
                             <input class="input--style-2" type="password" placeholder="Password" name="password">
                         </div>
+                        <?php
+                        if (!empty($_SESSION['error'])) {
+                            echo $_SESSION['error'];
+                            unset($_SESSION['error']);
+                        }
+                            ?>
 
                         <div class="p-t-30">
                             <button class="btn btn--radius btn--green" type="submit" name="submit">Sign In</button>
@@ -65,10 +71,10 @@ require './conection.php';
 
                                 //check if the input in email format
                                 if (empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                    $error = "<div class='error'>*Your Email is required, try again.</div>";
+                                    $_SESSION['error'] = "<div class='error'>*Your Email is required, try again.</div>";
                                 } 
                                 else if (empty($password)) {
-                                    $error = "<div class='error'>*Password is required.</div>";
+                                    $_SESSION['error'] = "<div class='error'>*Password is required.</div>";
                                 }else{
                                     $stmt = $pdo->prepare('SELECT * FROM `adherent` WHERE email=:email AND passWrd=:password');
                                     $stmt->bindParam(':email', $email);
@@ -83,19 +89,16 @@ require './conection.php';
                                             $_SESSION['id_adh'] = $row['id_adh'];
                                             header("Location: index.php");
                                         } else {
-                                            $error = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
+                                           $_SESSION['error'] = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
                                         }
                                     } else {
-                                        $error = "<div class='error'>*the Email and the Password incorrect, try again.</div>";
+                                        $_SESSION['error'] = "<div class='error'>*the Email and the Password incorrect, try again.</div>";
                                     }
                                     
                                 }
                             }
 
-                            if (!empty($error)) {
-                                echo $error;
-                                unset($error);
-                            }
+                           
 
 
                         ?>
@@ -123,6 +126,50 @@ require './conection.php';
     letter-spacing: 0.12em;
     text-align: center;
     color: #FFFFFF;
+}
+.card-2 .card-heading {
+    background: url("./images/guzel-maksutova-B30XL_m3fso-unsplash\ \(1\).jpg") top left/cover no-repeat;
+    width: 45.1%;
+
+    width: 410px;
+    height: 488px;
+    left: 762px;
+    top: -170px;
+}
+.wrapper--w960 {
+    max-width: 1280px;
+    width: 1154px;
+}
+.error {
+    font-size: 12px;
+    margin-top: 19px;
+    margin-bottom: 39px;
+    letter-spacing: 1px;
+    color: #FF5F3C;
+}
+.have_one {
+        margin-top: 10px;
+        margin-right: 40%;
+    }
+    span.have {
+        color: #FFFFFF;
+    }
+    a.have {
+        color: #FFFFFF;
+        font-weight: 650;
+        text-decoration: none;
+    } 
+    .btn--green {
+    background: #2F58CD;
+    width: 186px;
+    height: 53px;
+    margin: 22px 4px;
+}
+img {
+    height: 55px;
+    position: relative;
+    left: 107px;
+    top: 62px;
 }
 
 </style>
