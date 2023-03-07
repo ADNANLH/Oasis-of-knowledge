@@ -487,4 +487,8 @@
       padding: 60px 50px;
     }
   }
+  .site-navigation.d-flex.justify-content-between.fixed-top.py-3.px-5.align-items-center {
+    background-color: #3A1078;
+    color: white;
+}
   

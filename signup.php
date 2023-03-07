@@ -2,6 +2,62 @@
 require './conection.php';
 ?>
 
+<?php
+     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name  = $_POST['name'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = md5($_POST['password']);
+        $phone  = $_POST['phone'];
+        $address  = $_POST['address'];
+        $cin = $_POST['cin'];
+        $birthday  = $_POST['birthday'];
+        $type  = $_POST['type'];
+        $pinalite = 0;
+
+
+        $error = '';
+
+        if (empty($name) || empty($username) || empty($email) || empty($password) || empty($phone) || empty($phone) || empty($address) || empty($cin) || empty($birthday) || empty($type)) {
+            $error = 'Please enter all the values';
+        }elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Invalid email format';
+        } else {
+            $select = "SELECT * FROM adherent WHERE email = :email";
+            $stmt = $pdo->prepare($select);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $error = 'Email already exists in the database';
+        } else {
+			// Insert data into the database
+			$insert = "INSERT INTO adherent (name, userN, addresse, email, passWrd, phone, CIN, date_naiss, type, date_creat, pinalite) 
+            VALUES (:name, :user, :address, :email, :password, :phone, :cin, :birthday, :type, NOW(), :pinalite)";
+            $stmt = $pdo->prepare($insert);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':user', $username);
+            $stmt->bindParam(':address', $address);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':phone', $phone);
+            $stmt->bindParam(':cin', $cin);
+            $stmt->bindParam(':birthday', $birthday);
+            $stmt->bindParam(':type', $type);
+            $stmt->bindParam(':pinalite', $pinalite);
+            $stmt->execute();
+
+			header ("location: signin.php");
+	
+			// Check if the insertion was successful
+			
+		}
+	}
+	
+}
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -75,11 +131,19 @@ require './conection.php';
                                     </div>
 
                         </div>
+                        <?php
+						
+                            if(isset($error)){
+                                echo "<p class='para' style='color: red;'>" . $error . "</p>";
+                            }
+						 
+						 
+						?>
 
                       
                         
                         <div class="p-t-30">
-                            <button class="btn btn--radius btn--green" type="submit">Search</button>
+                            <button class="btn btn--radius btn--green" type="submit">SIGN UP</button>
                         </div>
                     </form>
                     <div class="have_one">
@@ -89,50 +153,7 @@ require './conection.php';
             </div>
         </div>
     </div>
-    <?php
-     if (isset($_POST['submit'])) {
-        $LName  = $_POST['LName'];
-        $Name = $_POST['Name'];
-        $Email  = $_POST['Email'];
-        $PhoneN = $_POST['Phone'];
-        $Password  = md5($_POST['Password']);
-        $Confirm_Password  = md5($_POST['Confirm_Password']);
-        $error = '';
-
-	if (empty($LName) || empty($Name) || empty($Email) || empty($PhoneN) || empty($Password) || empty($Confirm_Password)) {
-		$error = 'Please enter all the values';
-	} elseif ($Password !== $Confirm_Password) {
-		$error = 'Passwords do not match';
-	} elseif (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
-		$error = 'Invalid email format';
-	} else {
-		$select = "SELECT * FROM client WHERE Email = '$Email'";
-		$q = mysqli_query($conn, $select);
-		if (mysqli_num_rows($q) > 0) {
-			$error = 'Email already exists in the database';
-		} else {
-			// Sanitize input data
-			// $LName = mysqli_real_escape_string($conn, $LName);
-			// $Name = mysqli_real_escape_string($conn, $Name);
-			// $Email = mysqli_real_escape_string($conn, $Email);
-			// $PhoneN = mysqli_real_escape_string($conn, $PhoneN);
-	
-			// Insert data into the database
-			$insert = "INSERT INTO client (LName, Name, PhoneN, Email, Password) 
-					   VALUES ('$LName', '$Name', '$PhoneN', '$Email', '$Password')";
-			$q = mysqli_query($conn, $insert);
-			header ("location: SignIn.php");
-	
-			// Check if the insertion was successful
-			if (!$q) {
-				$error = 'Error inserting data into the database: ' . mysqli_error($conn);
-			}
-		}
-	}
-	
-	
-}
-?>
+  
 
   
 
