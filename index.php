@@ -25,40 +25,42 @@ require "conection.php";
     <title>Oasis of Knowledge</title>
 </head>
 
-
-<body>
+<header>
+    
     <nav class="site-nav">
-        <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#198754;">
-            <a href="index.php" class="logo "><img src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
-            
-            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
-            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
-           
+        <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center"">
+        <a href="index.php" ><img class="logo" src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
+        
+        <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
+        <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
+       
 
-            <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
-                <li class="justify-content-center me-4">
-                    <ul class="list-unstyled">
-                        <li><img src="./images//profile.png" class="profile" height="30px"></li>
-                        <?php
-                        if (isset($_SESSION['name'])) {
+        <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
+            <li class="justify-content-center me-4">
+                <ul class="list-unstyled">
+                    <li><img src="./images//profile.png" class="profile" height="30px"></li>
+                    <?php
+                    if (isset($_SESSION['name'])) {
 
-                            echo "<li><a href='profile.php' class='text-decoration-none'><h6 class='text-white'>" . $_SESSION['name'] . "</h6></a></li> <li><span>". $_SESSION['pinalite'] ."</span></li></ul>";
-                        }
+                        echo "<li><a href='profile.php' class='text-decoration-none'><h6 class='text-white'>" . $_SESSION['name'] . "</h6></a></li> <li><span>". $_SESSION['pinalite'] ."</span></li></ul>";
+                    }
 
-                        ?>
+                    ?>
 
-                </li>
-            </ul>
             </li>
-            </ul>
+        </ul>
+        </li>
+        </ul>
         </div>
     </nav>
+</header>
+<body>
 
     <div class="hero">
        
 
         <div class="container">
-            <div class="row justify-content-center ">
+            <div class="row justify-content-center"> 
                 <div class="col-lg-12 text-center">
         
                     <form action="#" method="post" class="" enctype="multipart/form-data" data-aos="fade-up" data-aos-delay="200">
@@ -209,5 +211,23 @@ require "conection.php";
     ?>
 
 </body>
+<style>
+    body {
+    background-size: unset;
+    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    margin: 129px 0px 0px 0px;
+    background-size: cover;
+    background-image: url(./images//cover.jpg);
+    background-size: 1366px 324%;
+    
+    background-repeat: no-repeat;
+}
+img.logo {
+    height: 35px;
+    margin-left: 157px;
+}
+</style>
 
 </html>
