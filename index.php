@@ -25,189 +25,276 @@ require "conection.php";
     <title>Oasis of Knowledge</title>
 </head>
 
-
-<body>
+<header>
+    
     <nav class="site-nav">
-        <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#198754;">
-            <a href="index.php" class="logo "><img src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
-            
-            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
-            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
-           
+        <div class="site-navigation  d-flex justify-content-end fixed-top py-3 px-5 align-items-center navi">
+            <div class=" d-flex  fixed-top py-3 px-5 align-items-center ">
 
-            <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
-                <li class="justify-content-center me-4">
-                    <ul class="list-unstyled">
-                        <li><img src="./images//profile.png" class="profile" height="30px"></li>
-                        <?php
-                        if (isset($_SESSION['name'])) {
+                <a href="index.php" ><img class="logo" src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
+                
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
+            </div>
+       
 
-                            echo "<li><a href='profile.php' class='text-decoration-none'><h6 class='text-white'>" . $_SESSION['name'] . "</h6></a></li> <li><span>". $_SESSION['pinalite'] ."</span></li></ul>";
-                        }
+        <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
+            <li class="justify-content-center me-4">
+                <ul class="list-unstyled">
+                    <li><img src="./images//profile.png" class="profile" height="30px"></li>
+                    <?php
+                    if (isset($_SESSION['name'])) {
 
-                        ?>
+                        echo "<li><a href='profile.php' class='text-decoration-none'><h6 class='text-white'>" . $_SESSION['name'] . "</h6></a></li> <li><span>". $_SESSION['pinalite'] ."</span></li></ul>";
+                    }
 
-                </li>
-            </ul>
+                    ?>
+
             </li>
-            </ul>
+        </ul>
+        </li>
+        </ul>
         </div>
     </nav>
+</header>
+<body>
 
     <div class="hero">
        
 
         <div class="container">
-            <div class="row justify-content-center ">
+            <div class="row justify-content-center"> 
                 <div class="col-lg-12 text-center">
         
-                    <form action="#" method="post" class="" enctype="multipart/form-data" data-aos="fade-up" data-aos-delay="200">
-                        <div class="row g-2 justify-content-center">
-                            <div class="col-md-3">
-                                <input type="text" class="form-control border-0" name="City" placeholder="City">
+                    <form action="" method="post" class="" >
+                        <div class="row justify-content-center input-group ">
+                            <div class="col-md-4 input-group">
+                               
+                                    <input type="search" class="form-control search" placeholder="Search" aria-label="Search" name="search" aria-describedby="search-addon" />
+                                    <!-- <button type="button" class="btn btn-primary" name="search-btn">Search</button> -->
+                                    <input type="submit"  name="search-btn" class="btn btn-primary" value="Search">
+                              
                             </div>
-                            <div class="col-md-2">
-                                <input name="min_price" type="text" class="form-control border-0 search-slt" placeholder="Min-Price">
-                            </div>
-                            <div class="col-md-2">
-                                <input type="text" name="max_price" class="form-control border-0 search-slt" placeholder="Max-Price">
-                            </div>
-                            <div class="col-md-3">
+
+                            <div class="col-md-4">
                                 <select name="type" class="form-control form-select border-0">
-                                    <option value="" disabled selected>Sale/Rental</option>
-                                    <option value="Sale">Sale</option>
-                                    <option value="Rental">Rental</option>
+                                    <option value="" disabled selected>Type</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Magazines">Magazines</option>
+                                    <option value="Novels">Novels</option>
+                                    <option value="Video cassettes">Video cassettes</option>
+                                    <option value="CDs">CDs</option>
+                                    <option value="DVDs">DVDs</option>
                                 </select>
                             </div>
 
-                            <div class="col-md-2 mb-3">
-                                <select name="category" class="form-control form-select border-0">
-                                    <option value="" disabled selected>Property Type</option>
-                                    <option value="House">House</option>
-                                    <option value="Apartment">Apartment</option>
-                                    <option value="Villa">Villa</option>
-                                </select>
+                            <div class="col-md-4">
+                                <input name="year" type="text" class="form-control border-0 search-slt" placeholder="Year">
                             </div>
-                            <div class="col-md-4 text-center">
-                                <button class=" btn border-0 w-100 bg-success py-3" name="Submit">Search</button>
-                            </div>
+                            
+
+                           
+                           
                         </div>
                     </form>
                 </div>
             </div>
 
         </div>
-        <!-- <div class="container">
-            <div class="justify-content-center align-items-center">
-                <div class="col-lg-12 text-center">
-                    <form class="narrow-w form-search d-flex justify-content-center align-items-center mb-5" action="" method="post">
-                        <div class="col-lg-3 col-md-6 col-sm-12 p-0 my-5">
-                            <button type="submit" class="btn bg-secondary text-white" name="sort_by" value="Price">Sort By Price</button>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 p-0 my-5">
-                            <button type="submit" class="btn bg-secondary text-white" name="sort_by" value="offerDate">Sort By Date</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> -->
+       
     </div>
 
 
 
     <?php
 
+if (empty($results)) {
+        $type = $_POST['type'];
+        $year = $_POST['year'];
+        $search = $_POST['search'];
+        $query = "SELECT * FROM `ouvre`";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        echo " <div class='container-xxl py-5 mt-5'>";
+        echo   "<div class='container'>";
+        echo   "<div class='tab-content'>";
+        echo   "<div id='tab-1' class='tab-pane fade show p-0 active'>";
+        echo   "<div class='row  g-4'>";
+        foreach ($results as $row){
+            echo $card = " <div class='card'>
+                <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
+                <img src='images/".$row['image']."' class='img-fluid'/>
+                <a href='#!'>
+                    <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
+                </a>
+                </div>
+                <div class='card-body'>
+                    <h5 class='card-title'>".$row['titre']."</h5>
+                    <h4 class='card-title'>".$row['auteur']."</h4>
+                    <h4 class='card-title'>".$row['date_edition']."</h4>
+                    <span>".$row['pages']." Pages</span>
+                    <a href='#!' class='btn btn-primary'>Button</a>
+                </div>
+                </div>
+            ";
+        }
+        echo "</div></div></div></div></div>";
+    }elseif(isset($_POST['search-btn'])) {
+        $card = "";
+        // Get the search terms from the form
+        $type = $_POST['type'];
+        $year = $_POST['year'];
+        $search = $_POST['search'];
 
+        // Build the SQL query
+        $sql = "SELECT * FROM `ouvre`";
+        $params = array();
 
-    // if (isset($_POST['Submit'])) {
-    //     // Get the search terms from the form
-    //     $city = mysqli_real_escape_string($conn, $_POST['City']);
+        if (!empty($search)) {
+            $sql .= " AND titre = :search";
+            $params[':search'] = $search;
+        }
 
+        if (!empty($type)) {
+            $sql .= " AND type = :type";
+            $params[':type'] = $type;
+        }
 
-    //     // Build the SQL query
-    //     $query = "SELECT  a.*, i.image 
-    // FROM annonce a 
-    // INNER JOIN images i ON a.id_annonce = i.id_annonce 
-    // WHERE i.is_principale = 1";
-    //     if (!empty($city)) {
-    //         $query .= " AND City = '{$city}'";
-    //     }
-    //     if (!empty($_POST['category'])) {
-    //         $category = $_POST['category'];
-    //         $query .= " AND Category = '{$category}'";
-    //     }
-    //     if (!empty($_POST['type'])) {
-    //         $Type = $_POST['type'];
-    //         $query .= " AND offerType = '{$Type}'";
-    //     }
-    //     if (isset($_POST['sort_by'])) {
-    //         $sorting = $_POST['sort_by'];
-    //         $fquery .= "  ORDER BY $sorting";
-    //     }
+        if (!empty($year)) {
+            $sql .= " AND date_edition = :year";
+            $params[':year'] = $year;
+        }
 
-    //     // Execute the query
-    //     $query_run = mysqli_query($conn, $query);
-    //     echo " <div class='container-xxl py-5 mt-5'>";
-    //     echo   "<div class='container'>";
-    //     echo   "<div class='tab-content'>";
-    //     echo   "<div id='tab-1' class='tab-pane d-flex fade show p-0 active'>";
-    //     echo   "<div class='row  g-4'>";
-    //     // Display the search results
-    //     while ($row = mysqli_fetch_assoc($query_run)) {
-    //         echo  "<div class='col-lg-4 col-md-6 wow fadeInUp mt-5' data-wow-delay='0.1s'>
-    //                             <div class='property-item rounded overflow-hidden'>
-    //                                 <div class='position-relative overflow-hidden'>
-    //                                     <a href='details.php?id_annonce=" . $row['id_annonce'] . "'><img class='img-fluid' src=" . $row['image'] . " alt=''></a>
-    //                                     <div class='bg-success rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3'>For " . $row['offerType'] . "</div>
-    //                                     <div class='bg-white rounded-top text-success position-absolute start-0 bottom-0 mx-4 pt-1 px-3'>" . $row['Category'] . "</div>
-    //                                 </div>
-    //                                 <div class='p-4 pb-0'>
-    //                                     <h5 class='text-success mb-3'>" . $row['Price'] . "$</h5>
-    //                                     <a class='d-block h5 mb-2 text-decoration-none' href='details.php?id_annonce=" . $row['id_annonce'] . "'>" . $row['Title'] . "</a>
-    //                                     <p><i class='fa fa-map-marker-alt text-success me-2'></i>" . $row['Address'] . "," . $row['City'] . "</p>
-    //                                 </div>
-    //                                 <div class='d-flex border-top'>
-    //                                     <small class='flex-fill text-center border-end py-2'><i class='fa fa-ruler-combined text-success me-2'></i>" . $row['Surface'] . " M²</small>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     ";
-    //     }
-    //     echo "</div></div></div></div></div>";
-    // } else {
-    //     $query = "SELECT * FROM annonce a 
-    // INNER JOIN images i ON a.id_annonce = i.id_annonce 
-    // WHERE i.is_principale = 1";
-    //     $query_run = mysqli_query($conn, $query);
-    //     echo " <div class='container-xxl py-5 mt-5'>";
-    //     echo   "<div class='container'>";
-    //     echo   "<div class='tab-content'>";
-    //     echo   "<div id='tab-1' class='tab-pane fade show p-0 active'>";
-    //     echo   "<div class='row  g-4'>";
-    //     while ($row = mysqli_fetch_array($query_run)) {
-    //         echo  "<div class='col-lg-4 col-md-6 wow fadeInUp mt-5' data-wow-delay='0.1s'>
-    //         <div class='property-item rounded overflow-hidden'>
-    //             <div class='position-relative overflow-hidden'>
-    //                 <a href='details.php?id_annonce=" . $row['id_annonce'] . "'><img class='img-fluid' src=" . $row['image'] . " alt=''></a>
-    //                 <div class='bg-success rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3'>For " . $row['offerType'] . "</div>
-    //                 <div class='bg-white rounded-top text-success position-absolute start-0 bottom-0 mx-4 pt-1 px-3'>" . $row['Category'] . "</div>
-    //             </div>
-    //             <div class='p-4 pb-0'>
-    //                 <h5 class='text-success mb-3'>" . $row['Price'] . "$</h5>
-    //                 <a class='d-block h5 mb-2 text-decoration-none' href='details.php?id_annonce=" . $row['id_annonce'] . "'>" . $row['Title'] . "</a>
-    //                 <p><i class='fa fa-map-marker-alt text-success me-2'></i>" . $row['Address'] . ", " . $row['City'] . "</p>
-    //             </div>
-    //             <div class='d-flex border-top'>
-    //                 <small class='flex-fill text-center border-end py-2'><i class='fa fa-ruler-combined text-success me-2'></i>" . $row['Surface'] . " M²</small>
-    //             </div>
-    //         </div>
-    //     </div>";
-    //     }
-    //     echo "</div></div></div></div></div>";
-    // };
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Display the search results
+        if (!empty($results)) {
+            echo "<div class='container-xxl py-5 mt-5'>";
+            echo "<div class='container'>";
+            echo "<div class='tab-content'>";
+            echo "<div id='tab-1' class='tab-pane d-flex fade show p-0 active'>";
+            echo "<div class='row g-4'>";
+
+            foreach ($results as $row) {
+                echo $card =  "<div class='card'>
+                        <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
+                        <img src='images/".$row['image']."' class='img-fluid'/>
+                        <a href='#!'>
+                            <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
+                        </a>
+                        </div>
+                        <div class='card-body'>
+                        <h5 class='card-title'>".$row['titre']."</h5>
+                        <h4 class='card-title'>".$row['auteur']."</h4>
+                        <h4 class='card-title'>".$row['date_edition']."</h4>
+                        <span>".$row['pages']." Pages</span>
+                        <a href='#!' class='btn btn-primary'>Button</a>
+                        </div>
+                    </div>
+                    ";
+            }
+            echo "</div></div></div></div></div>";
+        }else {
+            echo $card = "No results found.";
+        }
+    
+    
+    }
 
     ?>
 
 </body>
+<style>
+    body {
+    
+    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0px 0px 0px 0px;
+    background-size: cover;
+    background-image: url(./images//cover.jpg);
+    background-size: 100% 292%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left;
+    backdrop-filter: blur(3px);
+}
+.col-lg-12.text-center {
+    margin: 128px 0px 0px 0px;
+}
+img.logo {
+    height: 35px;
+    margin-left: 157px;
+}
+.navi {
+    background-color: #3A1078;
+    color: white;
+  
+}
+a.text-decoration-none {
+    color: white;
+    font-weight: bold;
+    margin-left: 49px;
+}
+.col-md-4.input-group {
+    width: 608px;
+}
+select.form-control.form-select.border-0 {
+    width: 99px;
+    height: 35px;
+    border-radius: 13px;
+}
+input.form-control.border-0.search-slt {
+    width: 99px;
+    height: 35px;
+    border-radius: 13px;
+
+}
+.col-md-4{
+    width: 125px;
+}
+
+input.btn.btn-primary {
+    border-radius: 17px;
+    background: #2F58CD;
+    border-radius: 0px 17px 17px 0px;
+    font-weight: 600;
+    font-size: 15px;
+    /* line-height: 10px; */
+    text-align: center;
+    letter-spacing: 0.16em;
+
+}
+input.form-control.search {
+    border-radius: 17px 0px 0px 17px;
+    padding-left: 29px;
+}
+.input-group {
+    position: relative;
+    margin-bottom: 0px;
+    border-bottom: none; 
+}
+  /* card */
+  .card {
+      overflow: hidden;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: #fff;
+      width: 219px;
+      margin: 23px 33px;
+      padding: 0px 0px;
+  }
+  .img-fluid {
+    max-width: 107%;
+    height: auto;
+    width: 218px;
+    
+}
+</style>
 
 </html>

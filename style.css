@@ -441,54 +441,10 @@
   /* ==========================================================================
      #CARD
      ========================================================================== */
-  .card {
-    overflow: hidden;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background: #fff;
-  }
-  
-  .card-2 {
     
-    width: 100%;
-    display: flex;
-    flex-direction: row-reverse;
-  }
   
-  .card-2 .card-heading {
-    background: url("./images/guzel-maksutova-B30XL_m3fso-unsplash\ \(1\).jpg") top left/cover no-repeat;
-    width: 45.1%;
-    display: table-cell;
-  }
   
-  .card-2 .card-body {
-    display: table-cell;
-    padding: 42px 142px;
-    padding-bottom: 38px;
-    width: 88%;
-    background: #3A1078;
-    color: white;
-    box-shadow: 16px 0px 18px rgba(58, 16, 120, 0.65);
-}
   
-  @media (max-width: 767px) {
-    .card-2 {
-      display: block;
-    }
-    .card-2 .card-heading {
-      width: 100%;
-      display: block;
-      padding-top: 300px;
-      background-position: left center;
-    }
-    .card-2 .card-body {
-      display: block;
-      padding: 60px 50px;
-    }
-  }
-  .site-navigation.d-flex.justify-content-between.fixed-top.py-3.px-5.align-items-center {
-    background-color: #3A1078;
-    color: white;
-}
+
+  
   
