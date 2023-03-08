@@ -28,15 +28,12 @@ require "conection.php";
 <header>
     
     <nav class="site-nav">
-        <div class="site-navigation  d-flex justify-content-end fixed-top py-3 px-5 align-items-center navi">
-            <div class=" d-flex  fixed-top py-3 px-5 align-items-center ">
-
-                <a href="index.php" ><img class="logo" src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
-                
-                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
-                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
-            </div>
-       
+        <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#198754;">
+            <a href="index.php" class="logo "><img src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
+            
+            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
+            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
+           
 
         <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
             <li class="justify-content-center me-4">
@@ -208,93 +205,5 @@ if (empty($results)) {
     ?>
 
 </body>
-<style>
-    body {
-    
-    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    margin: 0px 0px 0px 0px;
-    background-size: cover;
-    background-image: url(./images//cover.jpg);
-    background-size: 100% 292%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: left;
-    backdrop-filter: blur(3px);
-}
-.col-lg-12.text-center {
-    margin: 128px 0px 0px 0px;
-}
-img.logo {
-    height: 35px;
-    margin-left: 157px;
-}
-.navi {
-    background-color: #3A1078;
-    color: white;
-  
-}
-a.text-decoration-none {
-    color: white;
-    font-weight: bold;
-    margin-left: 49px;
-}
-.col-md-4.input-group {
-    width: 608px;
-}
-select.form-control.form-select.border-0 {
-    width: 99px;
-    height: 35px;
-    border-radius: 13px;
-}
-input.form-control.border-0.search-slt {
-    width: 99px;
-    height: 35px;
-    border-radius: 13px;
-
-}
-.col-md-4{
-    width: 125px;
-}
-
-input.btn.btn-primary {
-    border-radius: 17px;
-    background: #2F58CD;
-    border-radius: 0px 17px 17px 0px;
-    font-weight: 600;
-    font-size: 15px;
-    /* line-height: 10px; */
-    text-align: center;
-    letter-spacing: 0.16em;
-
-}
-input.form-control.search {
-    border-radius: 17px 0px 0px 17px;
-    padding-left: 29px;
-}
-.input-group {
-    position: relative;
-    margin-bottom: 0px;
-    border-bottom: none; 
-}
-  /* card */
-  .card {
-      overflow: hidden;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
-      background: #fff;
-      width: 219px;
-      margin: 23px 33px;
-      padding: 0px 0px;
-  }
-  .img-fluid {
-    max-width: 107%;
-    height: auto;
-    width: 218px;
-    
-}
-</style>
 
 </html>
