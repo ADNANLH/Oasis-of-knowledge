@@ -2,6 +2,15 @@
 
 session_start();
 require "conection.php";
+$id_adh = $_SESSION['id_adh'];
+
+$stmt = $pdo->prepare("SELECT * FROM adherent WHERE id_adh = :id_adh");
+$stmt->bindParam(':id_adh', $id_adh);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -29,26 +38,30 @@ require "conection.php";
     
     <nav class="site-nav">
         <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#198754;">
-            <a href="index.php" class="logo "><img src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
-            
-            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
-            <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
-           
+        <div class="site-navigation  d-flex justify-content-end fixed-top py-3 px-5 align-items-center navi">
+            <div class=" d-flex  fixed-top  py-3 px-5 align-items-center ">
 
-        <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
-            <li class="justify-content-center me-4">
-                <ul class="list-unstyled">
-                    <li><img src="./images//profile.png" class="profile" height="30px"></li>
-                    <?php
-                    if (isset($_SESSION['name'])) {
+                <a href="index.php" ><img class="logo" src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
 
-                        echo "<li><a href='profile.php' class='text-decoration-none'><h6 class='text-white'>" . $_SESSION['name'] . "</h6></a></li> <li><span>". $_SESSION['pinalite'] ."</span></li></ul>";
-                    }
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
+            </div>
 
-                    ?>
+        <div class="js-clone-nav me-4 d-flex flex-column align-items-center text-center site-menu">
+            <?php
+                foreach ($result as $row){
+                   echo " <div class='me-4 '>
+                            <div class='list-unstyled d-flex justify-content-around'>
+                            <img src='./images//profile.png' class='profile list-unstyled' height='30px'>
+                                <span class='pinal'>". $row['pinalite'] . "</span>
+                            </div> 
+                                <a href='profile.php' class='text-decoration-none'><h5 class='text-white bold'>". $row['name']." </h5></a>
+                        
+                        </div>
 
-            </li>
-        </ul>
+                ";}
+            ?>
+        </div>
         </li>
         </ul>
         </div>
@@ -104,11 +117,11 @@ require "conection.php";
 
 
     <?php
+// $type = $_POST['type'];
+// $year = $_POST['year'];
+// $search = $_POST['search'];
 
-if (empty($results)) {
-        $type = $_POST['type'];
-        $year = $_POST['year'];
-        $search = $_POST['search'];
+if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         $query = "SELECT * FROM `ouvre`";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
@@ -120,55 +133,77 @@ if (empty($results)) {
         echo   "<div id='tab-1' class='tab-pane fade show p-0 active'>";
         echo   "<div class='row  g-4'>";
         foreach ($results as $row){
-            echo $card = " <div class='card'>
-                <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
-                <img src='images/".$row['image']."' class='img-fluid'/>
-                <a href='#!'>
-                    <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
-                </a>
-                </div>
-                <div class='card-body'>
-                    <h5 class='card-title'>".$row['titre']."</h5>
-                    <h4 class='card-title'>".$row['auteur']."</h4>
-                    <h4 class='card-title'>".$row['date_edition']."</h4>
-                    <span>".$row['pages']." Pages</span>
-                    <a href='#!' class='btn btn-primary'>Button</a>
-                </div>
-                </div>
-            ";
+            $id = $row['id_ouvre'];
+            echo $card =  "<div class='card'>
+                        <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
+                    
+                        <img src='images/".$row['image']."' class='img-fluid'/>
+                        <a href='#!'>
+                            <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
+                        </a>
+                        </div>
+                        <div class='card-body'>
+                        <div class='d-flex justify-content-between'>
+                            <h4 class='card-title'>".$row['titre']."</h4>
+                            <h5 class='card-title'>".$row['date_edition']."</h5>
+                        </div>
+                        <h5 class='card-title'>".$row['auteur']."</h5>
+                        <div class='d-flex justify-content-between'>
+                            <span>".$row['pages']." Pages</span>
+                            <a href='#!' class='btn btn-primary reserve'>Reserve</a>
+                        </div>
+                        </div>
+                    </div>
+                    ";
         }
         echo "</div></div></div></div></div>";
-    }elseif(isset($_POST['search-btn'])) {
-        $card = "";
+    }else {
+        
         // Get the search terms from the form
-        $type = $_POST['type'];
-        $year = $_POST['year'];
-        $search = $_POST['search'];
-
+        $type = isset($_POST['type']) ? $_POST['type'] : '';
+        $year = isset($_POST['year']) ? $_POST['year'] : '';
+        $search = isset($_POST['search']) ? $_POST['search'] : '';
+        $condition = false;
+        
         // Build the SQL query
         $sql = "SELECT * FROM `ouvre`";
         $params = array();
 
+        if (!empty($search) || !empty($type) || !empty($year)) {
+            $sql .= " WHERE";
+        }
+
         if (!empty($search)) {
-            $sql .= " AND titre = :search";
+            $sql .= " titre = :search";
             $params[':search'] = $search;
         }
 
         if (!empty($type)) {
-            $sql .= " AND type = :type";
+            if (!empty($search)) {
+                $sql .= " OR";
+            }
+            $sql .= " type = :type";
             $params[':type'] = $type;
         }
 
         if (!empty($year)) {
-            $sql .= " AND date_edition = :year";
+            if (!empty($search) || !empty($type)) {
+                $sql .= " OR";
+            }
+            $sql .= " date_edition = :year";
             $params[':year'] = $year;
         }
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Display the search results
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                // Display the search results
         if (!empty($results)) {
             echo "<div class='container-xxl py-5 mt-5'>";
             echo "<div class='container'>";
@@ -185,18 +220,21 @@ if (empty($results)) {
                         </a>
                         </div>
                         <div class='card-body'>
-                        <h5 class='card-title'>".$row['titre']."</h5>
-                        <h4 class='card-title'>".$row['auteur']."</h4>
-                        <h4 class='card-title'>".$row['date_edition']."</h4>
+                        <div class='d-flex justify-content-between'>
+                            <h4 class='card-title'>".$row['titre']."</h4>
+                            <h5 class='card-title'>".$row['date_edition']."</h5>
+                        </div>
+                        <h5 class='card-title'>".$row['auteur']."</h5>
                         <span>".$row['pages']." Pages</span>
-                        <a href='#!' class='btn btn-primary'>Button</a>
+                        <a href='#!' class='btn btn-primary reserve'>Reserve</a>
                         </div>
                     </div>
                     ";
             }
             echo "</div></div></div></div></div>";
         }else {
-            echo $card = "No results found.";
+            echo $card = "";
+            echo $card = "<p class='error'>No results found.</p>";
         }
     
     
@@ -205,5 +243,115 @@ if (empty($results)) {
     ?>
 
 </body>
+<style>
+    body {
+
+    font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0px 0px 0px 0px;
+    background-size: cover;
+    background-image: url(./images//cover.jpg);
+    background-size: 100% 292%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left;
+    backdrop-filter: blur(3px);
+}
+.col-lg-12.text-center {
+    margin: 128px 0px 0px 0px;
+}
+img.logo {
+    height: 35px;
+    margin-left: 157px;
+}
+.navi {
+    background-color: #3A1078;
+    color: white;
+
+}
+a.text-decoration-none {
+    color: white;
+    font-weight: bold;
+    margin-left: 49px;
+}
+.col-md-4.input-group {
+    width: 608px;
+}
+select.form-control.form-select.border-0 {
+    width: 99px;
+    height: 35px;
+    border-radius: 13px;
+}
+input.form-control.border-0.search-slt {
+    width: 99px;
+    height: 35px;
+    border-radius: 13px;
+
+}
+.col-md-4{
+    width: 125px;
+}
+
+input.btn.btn-primary {
+    border-radius: 17px;
+    background: #2F58CD;
+    border-radius: 0px 17px 17px 0px;
+    font-weight: 600;
+    font-size: 15px;
+   
+    text-align: center;
+    letter-spacing: 0.16em;
+    width: 109px;
+
+}
+
+input.form-control.search {
+    border-radius: 17px 0px 0px 17px;
+    padding-left: 29px;
+}
+.input-group {
+    position: relative;
+    margin-bottom: 0px;
+    border-bottom: none; 
+}
+  /* card */
+  .card {
+      overflow: hidden;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: #fff;
+      width: 219px;
+      margin: 23px 33px;
+      padding: 0px 0px;
+  }
+  .img-fluid {
+    max-width: 107%;
+    height: auto;
+    width: 218px;
+
+}
+a.btn.btn-primary.reserve {
+    width: 95px;
+    background-color: #2F58CD;
+    font-size: 13px;
+    width: 105px;
+    font-weight: bold;
+    height: 23px;
+    font: revert;
+}
+li {
+    list-style: none;
+}
+span.pinal {
+    background: red;
+    padding: 0px 7px;
+    position: absolute;
+    border-radius: 25px;
+    top: 38px;
+    right: 95px;
+}
+</style>
 
 </html>
