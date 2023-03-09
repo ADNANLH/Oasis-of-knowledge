@@ -1,5 +1,5 @@
 <?php 
-require './conection.php';
+require '../conection.php';
 session_start();
 ?>
 
@@ -20,14 +20,14 @@ session_start();
     <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
 
-    <link href="style.css" rel="stylesheet" media="all">
+    <link href="../style.css" rel="stylesheet" media="all">
     <meta name="robots" content="noindex, follow">
 </head>
 
 
 <body>
 <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#3A1078;">
-            <a href="index.php" class="logo ms-4 rounded-circle bg-white"><img src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
+            <a href="index.php" class="logo ms-4 rounded-circle bg-white"><img src="../images//oasis-low-resolution-logo-color-on-transparent-background.png" height="60px"></a>
         </div>
     <div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
         <div class="wrapper wrapper--w960">
@@ -43,10 +43,10 @@ session_start();
 
                     <form method="POST">
                         <div class="input-group">
-                            <input class="input--style-2" type="text" placeholder="Email.." name="email">
+                            <input class="input--style-2" type="text" placeholder="Admin Email.." name="email">
                         </div>
                         <div class="input-group">
-                            <input class="input--style-2" type="password" placeholder="Password" name="password">
+                            <input class="input--style-2" type="password" placeholder="Admin Password" name="password">
                         </div>
                         <?php
                         if (!empty($_SESSION['error'])) {
@@ -67,6 +67,7 @@ session_start();
 
                                 $email = $_POST['email'];
                                 $password = md5($_POST['password']);
+                               
                                 // $pass =  md5($password);
 
                                 //check if the input in email format
@@ -76,24 +77,31 @@ session_start();
                                 else if (empty($password)) {
                                     $_SESSION['error'] = "<div class='error'>*Password is required.</div>";
                                 }else{
-                                    $stmt = $pdo->prepare('SELECT * FROM `adherent` WHERE email=:email AND passWrd=:password');
-                                    $stmt->bindParam(':email', $email);
-                                    $stmt->bindParam(':password', $password);
+                                  // Hash the password
+
+                                    // Prepare the query
+                                    $stmt = $pdo->prepare('SELECT * FROM `admine` WHERE emailAdm=:email');
+                                    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
                                     $stmt->execute();
-                                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                    
-                                    if (count($result) === 1) {
-                                        $row = $result[0];
-                                        if ($row['email'] === $email && $row['passWrd'] === $password) {
-                                            // $_SESSION['name'] = $row['name'];
-                                            $_SESSION['id_adh'] = $row['id_adh'];
-                                            header("Location: index.php");
-                                        } else {
-                                           $_SESSION['error'] = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
-                                        }
+                                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    // Check if the user exists and the password is correct
+                                    if ($result ) {
+                                        // Set session variables
+                                        $_SESSION['id_admin'] = $result['id_admin'];
+
+                                        // Redirect to index page
+                                        header("Location: indexAdm.php");
+                                        exit;
                                     } else {
-                                        $_SESSION['error'] = "<div class='error'>*the Email and the Password incorrect, try again.</div>";
+                                        // Set error message in session
+                                        $_SESSION['error'] = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
+
+                                        // Redirect back to login page
+                                        header("Location: login.php");
+                                        exit;
                                     }
+
                                     
                                 }
                             }
@@ -105,7 +113,7 @@ session_start();
 
                     </form>
                     <div class="have_one">
-                        <span class="have">You dont have an account? <a href="./SignUp.php" class="have">Sign Up</a> </span>
+                        <span class="have">You dont have an account? <a href="./signup-admin.php" class="have">Sign Up</a> </span>
                     </div>
                 </div>
             </div>
@@ -128,7 +136,7 @@ session_start();
     color: #FFFFFF;
 }
 .card-2 .card-heading {
-    background: url("./images/guzel-maksutova-B30XL_m3fso-unsplash\ \(1\).jpg") top left/cover no-repeat;
+    background: url("../images/guzel-maksutova-B30XL_m3fso-unsplash\ \(1\).jpg") top left/cover no-repeat;
     width: 45.1%;
     width: 410px;
     height: 488px;
