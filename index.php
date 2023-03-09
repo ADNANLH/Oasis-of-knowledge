@@ -117,9 +117,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
     <?php
-// $type = $_POST['type'];
-// $year = $_POST['year'];
-// $search = $_POST['search'];
+
 
 if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         $query = "SELECT * FROM `ouvre`";
@@ -133,16 +131,16 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         echo   "<div id='tab-1' class='tab-pane fade show p-0 active'>";
         echo   "<div class='row  g-4'>";
         foreach ($results as $row){
-            $id = $row['id_ouvre'];
-            echo $card =  "<div class='card'>
-                        <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
-                    
-                        <img src='images/".$row['image']."' class='img-fluid'/>
-                        <a href='#!'>
-                            <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
-                        </a>
-                        </div>
-                        <div class='card-body'>
+            
+            $card =  "<div class='card'>
+            <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
+                <img src='images/".$row['image']."' class='img-fluid'/>
+                <a href='#!'>
+                    <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
+                </a>
+                </div>
+                <form method='post' action=''>
+                    <div class='card-body'>
                         <div class='d-flex justify-content-between'>
                             <h4 class='card-title'>".$row['titre']."</h4>
                             <h5 class='card-title'>".$row['date_edition']."</h5>
@@ -150,11 +148,14 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
                         <h5 class='card-title'>".$row['auteur']."</h5>
                         <div class='d-flex justify-content-between'>
                             <span>".$row['pages']." Pages</span>
-                            <a href='#!' class='btn btn-primary reserve'>Reserve</a>
-                        </div>
+                            <input type='submit' name='reserve' id='".$row['id_ouvre']."' class='btn btn-primary reserve' value='Reserve' >                       
                         </div>
                     </div>
-                    ";
+                    <input type='hidden' name='id_ouvre' value='" . $row['id_ouvre'] . "'>
+                </form>
+            </div>";
+            echo $card;
+           
         }
         echo "</div></div></div></div></div>";
     }else {
@@ -212,34 +213,60 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             echo "<div class='row g-4'>";
 
             foreach ($results as $row) {
-                echo $card =  "<div class='card'>
+                $card =  "<div class='card'>
                         <div class='bg-image hover-overlay ripple' data-mdb-ripple-color='light'>
-                        <img src='images/".$row['image']."' class='img-fluid'/>
-                        <a href='#!'>
-                            <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
-                        </a>
-                        </div>
-                        <div class='card-body'>
-                        <div class='d-flex justify-content-between'>
-                            <h4 class='card-title'>".$row['titre']."</h4>
-                            <h5 class='card-title'>".$row['date_edition']."</h5>
-                        </div>
-                        <h5 class='card-title'>".$row['auteur']."</h5>
-                        <span>".$row['pages']." Pages</span>
-                        <a href='#!' class='btn btn-primary reserve'>Reserve</a>
-                        </div>
-                    </div>
-                    ";
+                            <img src='images/".$row['image']."' class='img-fluid'/>
+                            <a href='#!'>
+                                <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
+                            </a>
+                            </div>
+                            <form method='post' action=''>
+                                <div class='card-body'>
+                                    <div class='d-flex justify-content-between'>
+                                        <h4 class='card-title'>".$row['titre']."</h4>
+                                        <h5 class='card-title'>".$row['date_edition']."</h5>
+                                    </div>
+                                    <h5 class='card-title'>".$row['auteur']."</h5>
+                                    <div class='d-flex justify-content-between'>
+                                        <span>".$row['pages']." Pages</span>
+                                        <input type='submit' name='reserve' id='".$row['id_ouvre']."' class='btn btn-primary reserve' value='Reserve' >                       
+                                    </div>
+                                </div>
+                                <input type='hidden'  name='id_ouvre' value='" . $row['id_ouvre'] . "'>
+                            </form>
+                        </div>";
+                        echo $card;
+                        
+                    }
+                    echo "</div></div></div></div></div>";
+                   
+                }else {
+                    
+                    echo  "<p class='error'>No results found.</p>";
+                }
+                
+    
+    
+                
+                if (isset($_POST['reserve'])){
+                    $id_ouvre = $_POST['id_ouvre'];
+                    $id_adh = $row['id_adh'];
+                    $today = date("Y/m/d h:i:sa");
+                    
+                    $end_date = date("Y/m/d h:i:sa", strtotime("+24 hours", strtotime($today)));
+                    
+                    $sql2 = "INSERT INTO `reservation` (date_res, date_fn_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";
+                    
+                    $stmt = $pdo->prepare($sql2);
+                    $stmt->bindParam(':today', $today);
+                    $stmt->bindParam(':end_date', $end_date);
+                    $stmt->bindParam(':id_adh', $id_adh);
+                    $stmt->bindParam(':id_ouvre', $id_ouvre);
+                    
+                    $stmt->execute();
+                }
             }
-            echo "</div></div></div></div></div>";
-        }else {
-            echo $card = "";
-            echo $card = "<p class='error'>No results found.</p>";
-        }
     
-    
-    }
-
     ?>
 
 </body>
@@ -332,13 +359,14 @@ input.form-control.search {
     width: 218px;
 
 }
-a.btn.btn-primary.reserve {
-    width: 95px;
+input.btn.btn-primary.reserve {
+   
     background-color: #2F58CD;
-    font-size: 13px;
-    width: 105px;
-    font-weight: bold;
-    height: 23px;
+    
+    width: 111px;
+    
+    height: 26px;
+    border-radius: 8px;
     font: revert;
 }
 li {
