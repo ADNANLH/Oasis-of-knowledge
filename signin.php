@@ -85,7 +85,7 @@ session_start();
                                     if (count($result) === 1) {
                                         $row = $result[0];
                                         if ($row['email'] === $email && $row['passWrd'] === $password) {
-                                            // $_SESSION['name'] = $row['name'];
+                                            
                                             $_SESSION['id_adh'] = $row['id_adh'];
                                             header("Location: index.php");
                                         } else {

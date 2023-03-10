@@ -78,31 +78,29 @@ session_start();
                                     $_SESSION['error'] = "<div class='error'>*Password is required.</div>";
                                 }else{
                                   // Hash the password
+                                //   $password = md5($password);
 
                                     // Prepare the query
-                                    $stmt = $pdo->prepare('SELECT * FROM `admine` WHERE emailAdm=:email');
-                                    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                                    $stmt = $pdo->prepare('SELECT * FROM `admine` WHERE emailAdm=:email AND passAdm=:password');
+                                    $stmt->bindParam(':email', $email);
+                                    $stmt->bindParam(':password', $password);
                                     $stmt->execute();
-                                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                     // Check if the user exists and the password is correct
-                                    if ($result ) {
-                                        // Set session variables
-                                        $_SESSION['id_admin'] = $result['id_admin'];
-
-                                        // Redirect to index page
-                                        header("Location: indexAdm.php");
-                                        exit;
+                                    if (count($result) === 1) {
+                                        $row = $result[0];
+                                        if ($row['emailAdm'] === $email && $row['passAdm'] === $password) {    
+                                            $_SESSION['id_admin'] = $row['id_admin'];
+                                            header("Location: indexAdm.php");
+                                            exit;
+                                        } else {
+                                           $_SESSION['error'] = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
+                                        }    
                                     } else {
                                         // Set error message in session
                                         $_SESSION['error'] = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
-
-                                        // Redirect back to login page
-                                        header("Location: login.php");
-                                        exit;
-                                    }
-
-                                    
+                                    } 
                                 }
                             }
 

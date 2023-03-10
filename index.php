@@ -220,7 +220,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
                                 <div class='mask' style='background-color: rgba(251, 251, 251, 0.15);'></div>
                             </a>
                             </div>
-                            <form method='post' action=''>
+                            <form method='POST' action=''>
                                 <div class='card-body'>
                                     <div class='d-flex justify-content-between'>
                                         <h4 class='card-title'>".$row['titre']."</h4>
@@ -247,24 +247,29 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
                 
     
     
+              
+               
+            }
+
+            if (isset($_POST['reserve'])){
+                echo "jjjjjj";
+                $id_ouvre = $_POST['id_ouvre'];
+                $id_adh = $_SESSION['id_adh'];
+                $today = date("Y/m/d h:i:sa");
                 
-                if (isset($_POST['reserve'])){
-                    $id_ouvre = $_POST['id_ouvre'];
-                    $id_adh = $row['id_adh'];
-                    $today = date("Y/m/d h:i:sa");
-                    
-                    $end_date = date("Y/m/d h:i:sa", strtotime("+24 hours", strtotime($today)));
-                    
-                    $sql2 = "INSERT INTO `reservation` (date_res, date_fn_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";
-                    
-                    $stmt = $pdo->prepare($sql2);
-                    $stmt->bindParam(':today', $today);
-                    $stmt->bindParam(':end_date', $end_date);
-                    $stmt->bindParam(':id_adh', $id_adh);
-                    $stmt->bindParam(':id_ouvre', $id_ouvre);
-                    
-                    $stmt->execute();
-                }
+                $end_date = date("Y/m/d h:i:sa", strtotime("+24 hours", strtotime($today)));
+                
+                $sql2 = "INSERT INTO `reservation` (date_res, date_fin_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";
+                echo "jjjjjj";
+                $stmt = $pdo->prepare($sql2);
+                $stmt->bindParam(':today', $today);
+                $stmt->bindParam(':end_date', $end_date);
+                $stmt->bindParam(':id_adh', $id_adh);
+                $stmt->bindParam(':id_ouvre', $id_ouvre);
+                echo "jjjjjj";
+                $stmt->execute();
+             
+                
             }
     
     ?>
