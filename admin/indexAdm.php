@@ -87,8 +87,17 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="col-md-4">
-                                <input name="year" type="text" class="form-control border-0 search-slt" placeholder="Year">
+                                <select name="state" class="form-control form-select border-0">
+                                    <option value="" disabled selected>State</option>
+                                    <option value="New">New</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Acceptable">Acceptable</option>
+                                    <option value="Already used">Already used</option>
+                                    <option value="Torn">Torn</option>
+                                </select>
                             </div>
+
+                            
                             
 
                            
@@ -107,7 +116,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
 
 
-if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
+if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) {
         $query = "SELECT * FROM `ouvre`";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
@@ -156,7 +165,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         
         // Get the search terms from the form
         $type = isset($_POST['type']) ? $_POST['type'] : '';
-        $year = isset($_POST['year']) ? $_POST['year'] : '';
+        $state = isset($_POST['state']) ? $_POST['state'] : '';
         $search = isset($_POST['search']) ? $_POST['search'] : '';
         $condition = false;
         
@@ -164,7 +173,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         $sql = "SELECT * FROM `ouvre`";
         $params = array();
 
-        if (!empty($search) || !empty($type) || !empty($year)) {
+        if (!empty($search) || !empty($type) || !empty($state)) {
             $sql .= " WHERE";
         }
 
@@ -181,12 +190,12 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             $params[':type'] = $type;
         }
 
-        if (!empty($year)) {
+        if (!empty($state)) {
             if (!empty($search) || !empty($type)) {
                 $sql .= " OR";
             }
-            $sql .= " date_edition = :year";
-            $params[':year'] = $year;
+            $sql .= " etat = :state";
+            $params[':state'] = $state;
         }
 
         $stmt = $pdo->prepare($sql);

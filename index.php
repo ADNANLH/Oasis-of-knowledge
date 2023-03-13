@@ -99,7 +99,14 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="col-md-4">
-                                <input name="year" type="text" class="form-control border-0 search-slt" placeholder="Year">
+                                <select name="state" class="form-control form-select border-0">
+                                    <option value="" disabled selected>State</option>
+                                    <option value="New">New</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Acceptable">Acceptable</option>
+                                    <option value="Already used">Already used</option>
+                                    <option value="Torn">Torn</option>
+                                </select>
                             </div>
                             
 
@@ -119,7 +126,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
 
 
-if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
+if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) {
         $query = "SELECT * FROM `ouvre`";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
@@ -162,7 +169,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         
         // Get the search terms from the form
         $type = isset($_POST['type']) ? $_POST['type'] : '';
-        $year = isset($_POST['year']) ? $_POST['year'] : '';
+        $state = isset($_POST['state']) ? $_POST['state'] : '';
         $search = isset($_POST['search']) ? $_POST['search'] : '';
         $condition = false;
         
@@ -170,7 +177,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         $sql = "SELECT * FROM `ouvre`";
         $params = array();
 
-        if (!empty($search) || !empty($type) || !empty($year)) {
+        if (!empty($search) || !empty($type) || !empty($state)) {
             $sql .= " WHERE";
         }
 
@@ -187,12 +194,12 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             $params[':type'] = $type;
         }
 
-        if (!empty($year)) {
+        if (!empty($state)) {
             if (!empty($search) || !empty($type)) {
                 $sql .= " OR";
             }
-            $sql .= " date_edition = :year";
-            $params[':year'] = $year;
+            $sql .= " etat = :state";
+            $params[':state'] = $state;
         }
 
         $stmt = $pdo->prepare($sql);
@@ -252,22 +259,25 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             }
 
             if (isset($_POST['reserve'])){
-                echo "jjjjjj";
+                if($row['pinalite'] > 3){
+                    echo "sorry you cant reserve";
+
+                }else{
+
+                    
                 $id_ouvre = $_POST['id_ouvre'];
                 $id_adh = $_SESSION['id_adh'];
                 $today = date("Y/m/d h:i:sa");
-                
                 $end_date = date("Y/m/d h:i:sa", strtotime("+24 hours", strtotime($today)));
-                
-                $sql2 = "INSERT INTO `reservation` (date_res, date_fin_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";
-                echo "jjjjjj";
+                $sql2 = "INSERT INTO `reservation` (date_res, date_fin_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";     
                 $stmt = $pdo->prepare($sql2);
                 $stmt->bindParam(':today', $today);
                 $stmt->bindParam(':end_date', $end_date);
                 $stmt->bindParam(':id_adh', $id_adh);
                 $stmt->bindParam(':id_ouvre', $id_ouvre);
-                echo "jjjjjj";
+                
                 $stmt->execute();
+            }
              
                 
             }
