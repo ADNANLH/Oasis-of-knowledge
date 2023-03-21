@@ -44,7 +44,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="index.php" ><img class="logo" src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
 
                 <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
-                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="reservation.php">Reservations</a></li>
             </div>
 
         <div class="js-clone-nav me-4 d-flex flex-column align-items-center text-center site-menu">
@@ -70,6 +70,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
     <div class="hero">
+        
        
 
         <div class="container">
@@ -99,7 +100,14 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="col-md-4">
-                                <input name="year" type="text" class="form-control border-0 search-slt" placeholder="Year">
+                                <select name="state" class="form-control form-select border-0">
+                                    <option value="" disabled selected>State</option>
+                                    <option value="New">New</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Acceptable">Acceptable</option>
+                                    <option value="Already used">Already used</option>
+                                    <option value="Torn">Torn</option>
+                                </select>
                             </div>
                             
 
@@ -119,7 +127,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
 
 
-if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
+if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) {
         $query = "SELECT * FROM `ouvre`";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
@@ -162,7 +170,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         
         // Get the search terms from the form
         $type = isset($_POST['type']) ? $_POST['type'] : '';
-        $year = isset($_POST['year']) ? $_POST['year'] : '';
+        $state = isset($_POST['state']) ? $_POST['state'] : '';
         $search = isset($_POST['search']) ? $_POST['search'] : '';
         $condition = false;
         
@@ -170,7 +178,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         $sql = "SELECT * FROM `ouvre`";
         $params = array();
 
-        if (!empty($search) || !empty($type) || !empty($year)) {
+        if (!empty($search) || !empty($type) || !empty($state)) {
             $sql .= " WHERE";
         }
 
@@ -187,12 +195,12 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             $params[':type'] = $type;
         }
 
-        if (!empty($year)) {
+        if (!empty($state)) {
             if (!empty($search) || !empty($type)) {
                 $sql .= " OR";
             }
-            $sql .= " date_edition = :year";
-            $params[':year'] = $year;
+            $sql .= " etat = :state";
+            $params[':state'] = $state;
         }
 
         $stmt = $pdo->prepare($sql);
@@ -203,6 +211,9 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
 
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
                 
                 // Display the search results
         if (!empty($results)) {
@@ -252,25 +263,44 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             }
 
             if (isset($_POST['reserve'])){
-                echo "jjjjjj";
+
                 $id_ouvre = $_POST['id_ouvre'];
                 $id_adh = $_SESSION['id_adh'];
                 $today = date("Y/m/d h:i:sa");
-                
                 $end_date = date("Y/m/d h:i:sa", strtotime("+24 hours", strtotime($today)));
-                
-                $sql2 = "INSERT INTO `reservation` (date_res, date_fin_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";
-                echo "jjjjjj";
+                $sql2 = "INSERT INTO `reservation` (date_res, date_fin_res, id_adh, id_ouvre) VALUES (:today, :end_date, :id_adh, :id_ouvre)";     
                 $stmt = $pdo->prepare($sql2);
                 $stmt->bindParam(':today', $today);
                 $stmt->bindParam(':end_date', $end_date);
                 $stmt->bindParam(':id_adh', $id_adh);
                 $stmt->bindParam(':id_ouvre', $id_ouvre);
-                echo "jjjjjj";
+                
                 $stmt->execute();
+                $modal = "
+                <div class='modal' tabindex='-1' role='dialog'>
+                    <div class='modal-dialog' role='document'>
+                        <div class='modal-content'>
+                        <div class='modal-header'>
+                            <h5 class='modal-title'>Modal title</h5>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div>
+                        <div class='modal-body'>
+                            <p>Modal body text goes here.</p>
+                        </div>
+                        <div class='modal-footer'>
+                            <button type='button' class='btn btn-primary'>Save changes</button>
+                            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>";
+                    echo  $modal;
+            }
              
                 
-            }
+            
     
     ?>
 

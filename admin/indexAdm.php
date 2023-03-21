@@ -44,11 +44,11 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="indexAdm.php" ><img class="logo" src="../images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
 
                 <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="indexAdm.php">Home</a></li>
-                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvationsAdm.php">Reservations</a></li>
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="reservAdm.php">Reservations</a></li>
             </div>
 
         <div class="js-clone-nav me-4 d-flex flex-column align-items-center text-center site-menu">
-            <button type="submit" ><a href="add.php">Add</a></button>
+            <a href="./add.php">Add</a>
         </div>
         </li>
         </ul>
@@ -87,8 +87,17 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="col-md-4">
-                                <input name="year" type="text" class="form-control border-0 search-slt" placeholder="Year">
+                                <select name="state" class="form-control form-select border-0">
+                                    <option value="" disabled selected>State</option>
+                                    <option value="New">New</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Acceptable">Acceptable</option>
+                                    <option value="Already used">Already used</option>
+                                    <option value="Torn">Torn</option>
+                                </select>
                             </div>
+
+                            
                             
 
                            
@@ -107,7 +116,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
 
 
-if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
+if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) {
         $query = "SELECT * FROM `ouvre`";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
@@ -137,11 +146,11 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
                         <div class='d-flex justify-content-between'>
                         <div class='spans'>
                             <span class='spanP'>".$row['pages']." Pages</span>
-                            <span class='spanE'>".$row['etat']." Pages</span>
+                            <span class='spanE'>".$row['etat']."</span>
                         </div>
                             <div class='buttons'>
-                                <input type='submit' name='edit' id='".$row['id_ouvre']."' class='btn btn-warni edit' value='Edit' >                       
-                                <input type='submit' name='delete' id='".$row['id_ouvre']."' class='btn btn-error delete' value='Delete' >                       
+                                <button  name='edit' class='btn btn-warni edit' > <a href='./edit.php?id=".$row['id_ouvre']."'>Edit</a> </button>                  
+                                <button  name='delete' class='btn btn-error delete' > <a href='./delete.php?id=".$row['id_ouvre']."'>Delete</a> </button>                  
                             </div>
                         </div>
                     </div>
@@ -156,7 +165,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         
         // Get the search terms from the form
         $type = isset($_POST['type']) ? $_POST['type'] : '';
-        $year = isset($_POST['year']) ? $_POST['year'] : '';
+        $state = isset($_POST['state']) ? $_POST['state'] : '';
         $search = isset($_POST['search']) ? $_POST['search'] : '';
         $condition = false;
         
@@ -164,7 +173,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
         $sql = "SELECT * FROM `ouvre`";
         $params = array();
 
-        if (!empty($search) || !empty($type) || !empty($year)) {
+        if (!empty($search) || !empty($type) || !empty($state)) {
             $sql .= " WHERE";
         }
 
@@ -181,12 +190,12 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
             $params[':type'] = $type;
         }
 
-        if (!empty($year)) {
+        if (!empty($state)) {
             if (!empty($search) || !empty($type)) {
                 $sql .= " OR";
             }
-            $sql .= " date_edition = :year";
-            $params[':year'] = $year;
+            $sql .= " etat = :state";
+            $params[':state'] = $state;
         }
 
         $stmt = $pdo->prepare($sql);
@@ -224,7 +233,7 @@ if (empty($_POST['search']) && empty($_POST['year']) && empty($_POST['type'])) {
                                 <div class='d-flex justify-content-between'>
                                 <div class='spans'>
                                     <span class='spanP'>".$row['pages']." Pages</span>
-                                    <span class='spanE'>".$row['etat']." Pages</span>
+                                    <span class='spanE'>".$row['etat']."</span>
                                 </div>
                                     <div class='buttons'>
                                         <input type='submit' name='edit' id='".$row['id_ouvre']."' class='btn btn-warni edit' value='Edit' >                       
