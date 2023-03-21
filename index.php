@@ -44,7 +44,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="index.php" ><img class="logo" src="./images//oasis-low-resolution-logo-color-on-transparent-background.png" ></a>
 
                 <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="index.php">Home</a></li>
-                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="resetvations.php">Reservations</a></li>
+                <li class="js-clone-nav me-4 align-items-center d-flex text-center site-menu list-unstyled"><a class='text-decoration-none' href="reservation.php">Reservations</a></li>
             </div>
 
         <div class="js-clone-nav me-4 d-flex flex-column align-items-center text-center site-menu">
@@ -70,6 +70,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
     <div class="hero">
+        
        
 
         <div class="container">
@@ -210,6 +211,9 @@ if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) 
 
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
                 
                 // Display the search results
         if (!empty($results)) {
@@ -259,12 +263,7 @@ if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) 
             }
 
             if (isset($_POST['reserve'])){
-                if($row['pinalite'] > 3){
-                    echo "sorry you cant reserve";
 
-                }else{
-
-                    
                 $id_ouvre = $_POST['id_ouvre'];
                 $id_adh = $_SESSION['id_adh'];
                 $today = date("Y/m/d h:i:sa");
@@ -277,10 +276,31 @@ if (empty($_POST['search']) && empty($_POST['state']) && empty($_POST['type'])) 
                 $stmt->bindParam(':id_ouvre', $id_ouvre);
                 
                 $stmt->execute();
+                $modal = "
+                <div class='modal' tabindex='-1' role='dialog'>
+                    <div class='modal-dialog' role='document'>
+                        <div class='modal-content'>
+                        <div class='modal-header'>
+                            <h5 class='modal-title'>Modal title</h5>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div>
+                        <div class='modal-body'>
+                            <p>Modal body text goes here.</p>
+                        </div>
+                        <div class='modal-footer'>
+                            <button type='button' class='btn btn-primary'>Save changes</button>
+                            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>";
+                    echo  $modal;
             }
              
                 
-            }
+            
     
     ?>
 
