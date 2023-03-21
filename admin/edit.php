@@ -76,7 +76,7 @@
                                 <?php 
                                     if(isset($image)){
                                         echo "<img src='../images/". $image. "' class='current'>"; 
-                                        echo "<input class='form-control form-select border-0' type='file' name='image1' >";            
+                                        // echo "<input class='form-control form-select border-0' type='file' name='image1' >";            
                                     }else{
                                         echo "<input class='form-control form-select border-0' type='file' name='image1' >";            
                                         
